@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h1> {{order.number}} </h1>
+
+	{% for i in products %}
+	
+	{{i.donorId}}
+	<br>
+	{{i.pCode}}
+	<br>
+	{{i.bType}}
+	<br>
+	{{i.pDate}}
+	<br>
+	{{i.pVol}}
+	<br>
+	{% endfor %}
+</body>
+</html>
