@@ -10,8 +10,10 @@
 	<a href="{{url_for('newOrder')}}" > <h3> Create a New Order </h3> </a>
 
 	{% for order in order %} <!-- NEED ORDER IN ORDER STUPID SHIT drak for 2 hrs foudn by mistake -->
-		<a href = "{{url_for('orderlist',order_id=order.id )}}"> <p>{{order.number}}</p></a>
-
+		<a href = "{{url_for('showProduct',order_id=order.id )}}"> <p>{{order.number}}</p></a>
+		<p><a href = "{{url_for('editOrder',order_id = order.id)}}">Edit Order</a></p>
+		<p> <a href = "{{url_for('deleteOrder',order_id = order.id)}}">Delete Order</a> </p>
+		
 	{% endfor %}
 
 </body>

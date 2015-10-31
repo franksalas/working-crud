@@ -12,9 +12,8 @@ session = DBSession()
 
 app = Flask(__name__)
 
-# SHOW ALL ORDERS
 
-
+####### SHOW ALL PRODUCTS                ####################
 @app.route('/')
 @app.route('/order/')
 def showOrder():
@@ -23,6 +22,7 @@ def showOrder():
     return render_template('order.html', order=order)
 
 
+####### SHOW PRODUCTS FROM PARTICULAR ORDER ####################
 @app.route('/order/<int:order_id>/')
 @app.route('/order/<int:order_id>/product/')
 def showProduct(order_id):
@@ -33,16 +33,29 @@ def showProduct(order_id):
     # return 'This page is the menu for restaurant %s' % restaurant_id
 
 
-@app.route('/order/<int:order_id>/')
-def orderlist(order_id):
-	order = session.query(Order).filter_by(id=order_id).one()
-	products = session.query(Product).filter_by(order_id=order.id)
-	return render_template('menu.html', order=order, products=products)
-
-
+#######  ORDER CRUD         ####################
 @app.route('/order/new/', methods=['GET', 'POST'])
 def newOrder():
 	return "page to CREATE new Order"
+
+
+@app.route('/order/<int:order_id>/edit/', methods=['GET', 'POST'])
+def editOrder(order_id):
+	return "page to EDIT order"
+
+
+@app.route('/order/<int:order_id>/delete/', methods=['GET', 'POST'])
+def deleteOrder(order_id):
+	return "page to DELETE order"
+
+
+# @app.route('/order/<int:order_id>/')  NOT NEEDED WILL USE showProduct
+# def orderlist(order_id):
+# 	order = session.query(Order).filter_by(id=order_id).one()
+# 	products = session.query(Product).filter_by(order_id=order.id)
+# 	return render_template('menu.html', order=order, products=products)
+
+
 
 
 # @app.route('/order/<int:order_id>/new/', methods=['GET', 'POST'])
@@ -50,9 +63,7 @@ def newOrder():
 # 	return "page to CREATE new Product"
 
 
-# @app.route('/order/<int:order_id>/<int:product_id>/edit/')
-# def editProduct(order_id, product_id):
-# 	return "page to EDIT product"
+
 
 
 # @app.route('/order/<int:order_id>/<int:product_id>/delete/')
