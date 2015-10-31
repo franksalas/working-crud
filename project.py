@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -12,35 +12,52 @@ session = DBSession()
 
 app = Flask(__name__)
 
+# SHOW ALL ORDERS
+
 
 @app.route('/')
-@app.route('/hello/')
-def orderlist():
-	order = session.query(Order).first()
+@app.route('/order/')
+def showOrder():
+    order = session.query(Order).all()
+    # return "This page will show all my orders"
+    return render_template('order.html', order=order)
+
+
+@app.route('/order/<int:order_id>/')
+@app.route('/order/<int:order_id>/product/')
+def showProduct(order_id):
+    order = session.query(Order).filter_by(id=order_id).one()
+    product = session.query(Product).filter_by(
+        order_id=order_id).all()
+    return render_template('menu.html', product=product, order=order)
+    # return 'This page is the menu for restaurant %s' % restaurant_id
+
+
+@app.route('/order/<int:order_id>/')
+def orderlist(order_id):
+	order = session.query(Order).filter_by(id=order_id).one()
 	products = session.query(Product).filter_by(order_id=order.id)
-	output = ''
-	for i in products:
-		output += i.donorId
-		output += '</br>'
-		output += i.pCode
-		output += '</br>'
-		output += i.bType
-		output += '</br>'
-		output += i.pDate
-		output += '</br>'
-		output += i.pVol
-		output += '</br>'
-
-	return output
+	return render_template('menu.html', order=order, products=products)
 
 
-
-	# order = session.query(Order).filter_by(id=order_id).one()
-	# products = session.query(Product).filter_by(order_id=order_id)
-	# return render_template('menu.html', order=order, products=products)
-
+@app.route('/order/new/', methods=['GET', 'POST'])
+def newOrder():
+	return "page to CREATE new Order"
 
 
+# @app.route('/order/<int:order_id>/new/', methods=['GET', 'POST'])
+# def newProduct(order_id):
+# 	return "page to CREATE new Product"
+
+
+# @app.route('/order/<int:order_id>/<int:product_id>/edit/')
+# def editProduct(order_id, product_id):
+# 	return "page to EDIT product"
+
+
+# @app.route('/order/<int:order_id>/<int:product_id>/delete/')
+# def deleteProduct(order_id, product_id):
+# 	return "page to DELETE Product"
 
 
 if __name__ == '__main__':

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+	<h1>ORDERS</h1>
+
+	<a href="{{url_for('newOrder')}}" > <h3> Create a New Order </h3> </a>
+
+	{% for order in order %} <!-- NEED ORDER IN ORDER STUPID SHIT drak for 2 hrs foudn by mistake -->
+		<a href = "{{url_for('orderlist',order_id=order.id )}}"> <p>{{order.number}}</p></a>
+
+	{% endfor %}
+
+</body>
+</html>

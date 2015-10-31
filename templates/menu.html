@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h1>order number: {{order.number}} </h1>
+
+	{% for i in product %} <!-- it should say product not products -->
+	<h4>Product</h4>
+		{{i.donorId}}
+		<br>
+		{{i.pCode}}
+		<br>
+		{{i.bType}}
+		<br>
+		{{i.pDate}}
+		<br>
+		{{i.pVol}}
+		<br><br>
+	{% endfor %}
+</body>
+</html>
