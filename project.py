@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request, redirect
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -34,19 +34,29 @@ def showProduct(order_id):
 
 
 #######  ORDER CRUD         ####################
+# @app.route('/order/new/', methods=['GET', 'POST'])
+# def newOrder():
+#     return "page to CREATE new Order"
+
 @app.route('/order/new/', methods=['GET', 'POST'])
 def newOrder():
-	return "page to CREATE new Order"
+    if request.method == 'POST':
+        newOrder = Order(number=request.form['number'])
+        session.add(newOrder)
+        session.commit()
+        return redirect(url_for('showOrder'))
+    else:
+        return render_template('newOrder.html')
 
 
 @app.route('/order/<int:order_id>/edit/', methods=['GET', 'POST'])
 def editOrder(order_id):
-	return "page to EDIT order"
+    return "page to EDIT order"
 
 
 @app.route('/order/<int:order_id>/delete/', methods=['GET', 'POST'])
 def deleteOrder(order_id):
-	return "page to DELETE order"
+    return "page to DELETE order"
 
 
 # @app.route('/order/<int:order_id>/')  NOT NEEDED WILL USE showProduct
@@ -56,12 +66,49 @@ def deleteOrder(order_id):
 # 	return render_template('menu.html', order=order, products=products)
 
 
-
-
 # @app.route('/order/<int:order_id>/new/', methods=['GET', 'POST'])
 # def newProduct(order_id):
 # 	return "page to CREATE new Product"
 
+
+@app.route('/order/<int:order_id>/product/new/', methods=['GET', 'POST'])
+def newProduct(order_id):
+    if request.method == 'POST':
+        newProduct = Product(
+            donorId=request.form['donorId'],
+            pCode=request.form['pCode'],
+            bType=request.form['bType'],
+            pDate=request.form['pDate'],
+            pVol=request.form['pVol'],
+            order_id=order_id
+            )
+        session.add(newProduct)
+        session.commit()
+        return redirect(url_for('showProduct', order_id=order_id))
+    else:
+        return render_template('newproduct.html', order_id=order_id)
+
+    return render_template('newproduct.html', order_id=order_id)
+
+
+# @app.route('/order/<int:order>/menu/new/', methods=['GET', 'POST'])
+# def newProduct(order_id):
+#     if request.method == 'POST':
+#         newProduct = Product(
+#             donorId=request.form['donorId'],
+#             pCode=request.form['pCode'],
+#             bType=request.form['bType'],
+#             pDate=request.form['pDate'],
+#             pVol=request.form['pVol'],
+#             order_id=order_id
+#             )
+#         session.add(newProduct)
+#         session.commit()
+#         return redirect(url_for('showProduct', order_id=order_id))
+#     else:
+#         return render_template('newproduct.html', order_id=order_id)
+
+#     return render_template('newproduct.html', order_id=order_id)
 
 
 
@@ -72,4 +119,4 @@ def deleteOrder(order_id):
 
 
 if __name__ == '__main__':
-	app.run(debug=True)
+    app.run(debug=True)

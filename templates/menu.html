@@ -5,6 +5,8 @@
 </head>
 <body>
 <h1>order number: {{order.number}} </h1>
+<a href = "{{url_for('newProduct', order_id = order.id )}}">Create New Product</a>
+
 
 	{% for i in product %} <!-- it should say product not products -->
 	<h4>Product</h4>
